@@ -1,0 +1,122 @@
+Create Table Book(
+call_no INT NOT NULL,
+title VarChar(50) NOT NULL,
+subject VarChar(50) NOT NULL);
+
+Create Table Patron(
+user_id INT NOT NULL,
+name VarChar(50) NOT NULL,
+age INT(50) NOT NULL);
+
+Create Table Loan(
+call_no INT NOT NULL,
+user_id INT NOT NULL,
+fine INT,
+paid VarChar(50));
+
+INSERT INTO Book VALUES (100,'Physics Handbook','Physics'), (200,'Database Systems','Computing'), (300,'Modula-2','Computing'), (400,'Database Design','Computing'), (500,'Software Testing','Computing'), (600,'Business Society','Business'), (700,'Graphs','Mathematics'), (800,'Cell Biology','Biology'), (900,'Set Theory', 'Mathematics');
+
+INSERT INTO Patron VALUES (100,'Wong',22), (150,'Colin',31), (200,'King',21), (250,'Das',67), (300,'Niall',17), (350,'Smith',72), (400,'Jones',41);
+
+INSERT INTO Loan VALUES (100,100,null,'yes'), (300,100,null,null), (900,200,1.90,'yes'), (400,200,16.30,'yes'), (600,200,16.30,'yes'), (500,250,null, null), (600,250,36.5,'yes'), (700,300,null,null), (800,350,2.90,'yes'), (900,400,null,null);
+
+SELECT*
+From Book;
+
+SELECT*
+From Patron;
+
+SELECT*
+From Loan;
+
+Alter Table Patron
+Add address Char(30);
+
+SELECT user_id,name,age,address
+From Patron;
+
+
+CREATE TABLE Seniors AS SELECT * FROM Patron WHERE age>65;
+
+SELECT user_id,name,age,address
+From Seniors;
+
+select title
+from Book;
+
+select title,subject
+from Book;
+
+select Distinct subject
+from Book;
+
+select title From Book Where subject= 'Mathematics';
+
+select*From Book Where call_no=300;
+
+select user_id,call_no,fine/2 AS British_Pounds_Fine from Loan;
+
+select user_id,call_no,fine/2 AS British_Pounds_Fine,paid from Loan Where British_Pounds_Fine>10;
+
+select call_no FROM Loan Where(user_id=200 OR user_id=250) AND fine>2;
+
+select * FROM Book Where title like 'Database%';
+
+select * FROM Book Where title like '_o%';
+
+select * FROM Book Where call_no Between 200 and 400;
+
+select * FROM Loan Where paid is NULL;
+
+select * FROM Loan Where paid is NOT NULL;
+
+select name FROM Patron Where user_id IN(100,200,300,350);
+
+select title FROM Book Where subject IN('Computing','History');
+
+select MAX(fine) AS largest_fine FROM Loan;
+
+select MIN(fine) AS least_fine FROM Loan;
+
+select SUM(fine) AS total_fine FROM Loan;
+
+select AVG(fine) AS Average_fine_collected FROM Loan;
+
+select COUNT(call_no) AS total_book FROM Book;
+
+select COUNT(paid) AS fine_collected FROM Loan;
+
+select COUNT(paid) AS fine_collected FROM Loan;
+
+SELECT COUNT(subject) AS computing_count FROM Book WHERE subject='Computing';
+
+SELECT COUNT(DISTINCT subject) AS unique_subject FROM Book;
+
+SELECT * FROM Book ORDER BY title ASC;
+
+SELECT * FROM Book ORDER BY title DESC;
+
+SELECT * FROM Book ORDER BY subject, call_no;
+
+SELECT user_id, SUM(fine) FROM Loan GROUP BY user_id;
+
+SELECT user_id, SUM(fine) as total_fine FROM Loan GROUP BY user_id HAVING SUM(fine)>30  AND call_no>400;
+
+SELECT Patron.user_id,Patron.name,Loan.call_no FROM Patron INNER JOIN Loan ON Patron.user_id=Loan.user_id;
+
+Create Table sample (
+Sample_ID INT NOT NULL,
+ Sample_Name varchar(60));
+
+
+DROP Table sample;
+
+
+UPDATE Patron SET age=age+1;
+
+DELETE From Book WHERE subject='Computing';
+
+
+DELETE FROM Loan WHERE user_id=(SELECT user_id FROM Patron WHERE name='King');
+
+INSERT INTO Patron(name, user_id, age) VALUES ('Thomas', 900, 34);
